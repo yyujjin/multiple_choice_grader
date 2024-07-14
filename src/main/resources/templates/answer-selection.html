@@ -12,7 +12,7 @@
         <div class="d-flex">
             <span class="pe-2" th:text="${question.number} + 번">1번</span>
             <div>
-                <button>알쏭달쏭</button>
+                <button class="scrap-btn" th:attr="data-id=${range.chapter+'_'+question.number}">알쏭달쏭</button>
                 <button>모르겠다</button>
             </div>
         </div>
@@ -36,5 +36,10 @@
         </div>
     </div>
 </div>
+<div>
+    <a href="/">이전 페이지</a>
+    <a href="/">다음 페이지</a>
+</div>
+<script src="/js/answer-selection.js"></script>
 </body>
 </html>
