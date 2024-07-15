@@ -38,10 +38,8 @@
     <input type="hidden" name="scrap">
     <input type="hidden" name="page" th:attr="value=${page}">
     <div>
-<!--        <a href="/" class="btn disabled" th:if="${page == 1}"> << 이전 페이지</a>-->
-        <button data-type="prev" class="btn" type="submit"><< 이전 페이지</button>
-        <button data-type="next" class="btn" type="submit" th:if="${page == 3}"> >> 결과화면</button>
-        <button data-type="next" class="btn" type="submit" th:unless="${page == 3}"> >> 다음 페이지</button>
+        <button data-type="prev" class="btn" type="submit" th:classappend="${page == 1} ? 'disabled' : ''"> << 이전 페이지</button>
+        <button data-type="next" class="btn" type="submit" th:text="${page == 3} ? ' >> 결과화면' : ' >> 다음 페이지'"></button>
     </div>
 </form>
 <script src="/js/answer-selection.js"></script>
