@@ -3,19 +3,13 @@ package com.sideproject.grading.domain;
 import java.util.ArrayList;
 
 public class QuestionRange {
-    private int chapter;
-    private ArrayList<Question> questions;
+    private static ArrayList<Chapter> chapters;
 
-    public QuestionRange(int chapter, ArrayList<Question> questions) {
-        this.chapter = chapter;
-        this.questions = questions;
+    public static ArrayList<Chapter> getChapters() {
+        return chapters;
     }
 
-    public int getChapter() {
-        return chapter;
-    }
-
-    public ArrayList<Question> getQuestions() {
-        return questions;
+    public static void setChapters(ArrayList<Chapter> chapters) {
+        QuestionRange.chapters = chapters;
     }
 }

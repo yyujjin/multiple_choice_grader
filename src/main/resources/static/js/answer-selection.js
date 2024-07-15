@@ -19,7 +19,7 @@ $scrap_btns.forEach((btn) => {
 
 $form.addEventListener('submit', (e) => {
 //    e.preventDefault()
+
     $form.scrap.value = JSON.stringify(scraps)
-    debugger
     alert('hi')
 })
