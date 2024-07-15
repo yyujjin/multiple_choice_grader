@@ -39,4 +39,9 @@ public class GradingController {
 
         return "answer-selection";
     }
+
+    @GetMapping("/result")
+    public String result() {
+        return "result";
+    }
 }
