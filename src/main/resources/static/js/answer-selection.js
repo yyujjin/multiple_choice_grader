@@ -1,5 +1,7 @@
 const $scrap_btns = document.querySelectorAll(".scrap-btn");
 const $form = document.querySelector('form')
+const $submitButtons = document.querySelectorAll("form button[type=submit]");
+
 const scraps = {};
 
 $scrap_btns.forEach((btn) => {
@@ -17,9 +19,16 @@ $scrap_btns.forEach((btn) => {
   });
 });
 
-$form.addEventListener('submit', (e) => {
-//    e.preventDefault()
+$submitButtons.forEach(btn => {
+    btn.addEventListener('click', ({target}) => {
+        if (target.dataset.type === 'next') {
+            $form.action = '/questions/next'
+        } else {
+            $form.action = '/questions/prev'
+        }
+    })
+})
 
+$form.addEventListener('submit', (e) => {
     $form.scrap.value = JSON.stringify(scraps)
-    alert('hi')
 })

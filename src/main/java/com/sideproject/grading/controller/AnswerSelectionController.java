@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 public class AnswerSelectionController {
     @GetMapping("/answer-selection")
-    public String answerSelection(@RequestParam("page") int page, Model model) {
+    public String answerSelection(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
         model.addAttribute("page", page);
 
         return "answer-selection";
@@ -25,6 +25,7 @@ public class AnswerSelectionController {
     @PostMapping("/questions/next")
     public String next(HttpServletRequest request, Model model) {
         List<SelectedAnswer> selectedAnswers = new ArrayList<>();
+        int nextPage = 1;
 
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
@@ -35,12 +36,18 @@ public class AnswerSelectionController {
                 int answerNumber = Integer.parseInt(request.getParameter(paramName));
 
                 selectedAnswers.add(new SelectedAnswer(questionNumber, answerNumber));
+            } else if (paramName.equals("page")) {
+                nextPage = Integer.parseInt(request.getParameter(paramName)) + 1;
             }
         }
 
         SelectedAnswerManager.setSelectedAnswers(selectedAnswers);
 
-        return "answer-selection";
+        if (nextPage > 3) {
+            return "redirect:/result";
+        }
+
+        return "redirect:/answer-selection?page="+nextPage;
     }
 
 }
