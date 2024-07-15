@@ -6,29 +6,35 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<form method="post">
-    <div th:each="number : ${#numbers.sequence((page - 1) * 10 + 1, page * 10)}">
-        <div class="d-flex">
+<form method="post" class="container p-5 d-flex gap-5 flex-column justify-content-center align-items-center">
+    <div class="w-50 d-flex flex-column mb-5" th:each="number : ${#numbers.sequence((page - 1) * 10 + 1, page * 10)}">
+        <div class="d-flex align-items-center mb-2">
             <span class="pe-2" th:text="${number} + 번">1번</span>
             <div>
-                <button type="button" class="scrap-btn" th:attr="data-id=${number}">알쏭달쏭</button>
-                <button type="button">모르겠다</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary scrap-btn" th:attr="data-id=${number}">
+                    <img src="/images/scrap.jpeg" width="20" />
+                    알쏭달쏭
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">
+                    <img src="/images/wrong.jpeg" width="20" />
+                    모르겠다
+                </button>
             </div>
         </div>
-        <div>
-            <label>
+        <div class="d-flex justify-content-around border p-2">
+            <label class="pe-4">
                 <input type="radio" th:attr="name=${number+'_answer'}" required value="1">
                 1
             </label>
-            <label>
+            <label class="pe-4">
                 <input type="radio" th:attr="name=${number+'_answer'}" required value="2">
                 2
             </label>
-            <label>
+            <label class="pe-4">
                 <input type="radio" th:attr="name=${number+'_answer'}" required value="3">
                 3
             </label>
-            <label>
+            <label class="pe-4">
                 <input type="radio" th:attr="name=${number+'_answer'}" required value="4">
                 4
             </label>
@@ -38,8 +44,8 @@
     <input type="hidden" name="scrap">
     <input type="hidden" name="page" th:attr="value=${page}">
     <div>
-        <button data-type="prev" class="btn" type="submit" th:classappend="${page == 1} ? 'disabled' : ''"> << 이전 페이지</button>
-        <button data-type="next" class="btn" type="submit" th:text="${page == 3} ? ' >> 결과화면' : ' >> 다음 페이지'"></button>
+        <button data-type="prev" class="btn btn-secondary" type="submit" th:classappend="${page == 1} ? 'disabled' : ''"> << 이전 페이지</button>
+        <button data-type="next" class="btn btn-primary" type="submit" th:text="${page == 3} ? ' >> 결과화면' : ' >> 다음 페이지'"></button>
     </div>
 </form>
 <script src="/js/answer-selection.js"></script>
