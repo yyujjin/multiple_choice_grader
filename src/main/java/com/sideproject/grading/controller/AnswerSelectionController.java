@@ -32,7 +32,7 @@ public class AnswerSelectionController {
 
         int nextPage = answerSelectionService.getPage(request, PagingType.NEXT);
 
-        if (nextPage > 3) {
+        if (nextPage > 6) {
             return "redirect:/result";
         }
 
