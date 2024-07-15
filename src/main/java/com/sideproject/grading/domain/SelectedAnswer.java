@@ -13,15 +13,8 @@ public class SelectedAnswer {
         return number;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public int getAnswer() {
         return answer;
     }
 
-    public void setAnswer(int answer) {
-        this.answer = answer;
-    }
 }
