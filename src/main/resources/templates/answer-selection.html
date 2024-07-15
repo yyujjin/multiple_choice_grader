@@ -7,7 +7,7 @@
 </head>
 <body>
 <form action="/questions/next" method="post">
-    <div th:each="number : ${#numbers.sequence(1, 30)}">
+    <div th:each="number : ${#numbers.sequence((page - 1) * 10 + 1, page * 10)}">
         <div class="d-flex">
             <span class="pe-2" th:text="${number} + 번">1번</span>
             <div>
