@@ -10,10 +10,11 @@ public class GradingController {
         return "start";
     }
 
-    @GetMapping("/range-selection")
-    public String rangeSelection() {
-        return "range-selection";
-    }
+// v2 에서 작업 예정이라 주석 처리
+//    @GetMapping("/range-selection")
+//    public String rangeSelection() {
+//        return "range-selection";
+//    }
 
     @GetMapping("/result")
     public String result() {

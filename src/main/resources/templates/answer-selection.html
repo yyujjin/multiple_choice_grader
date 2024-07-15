@@ -7,35 +7,33 @@
 </head>
 <body>
 <form action="/questions/next" method="post">
-    <div th:each="range : ${questionRange}">
-        <h2 th:text="${range.chapter} + 장">1장</h2>
-        <div th:each="question : ${range.questions}">
-            <div class="d-flex">
-                <span class="pe-2" th:text="${question.number} + 번">1번</span>
-                <div>
-                    <button type="button" class="scrap-btn" th:attr="data-id=${range.chapter+'_'+question.number}">알쏭달쏭</button>
-                    <button type="button">모르겠다</button>
-                </div>
-            </div>
+    <div th:each="number : ${#numbers.sequence(1, 30)}">
+        <div class="d-flex">
+            <span class="pe-2" th:text="${number} + 번">1번</span>
             <div>
-                <label>
-                    <input type="radio" th:attr="name=${question.number+'_answer'}" required>
-                    1
-                </label>
-                <label>
-                    <input type="radio" th:attr="name=${question.number+'_answer'}" required>
-                    2
-                </label>
-                <label>
-                    <input type="radio" th:attr="name=${question.number+'_answer'}" required>
-                    3
-                </label>
-                <label>
-                    <input type="radio" th:attr="name=${question.number+'_answer'}" required>
-                    4
-                </label>
+                <button type="button" class="scrap-btn" th:attr="data-id=${number}">알쏭달쏭</button>
+                <button type="button">모르겠다</button>
             </div>
         </div>
+        <div>
+            <label>
+                <input type="radio" th:attr="name=${number+'_answer'}" required value="1">
+                1
+            </label>
+            <label>
+                <input type="radio" th:attr="name=${number+'_answer'}" required value="2">
+                2
+            </label>
+            <label>
+                <input type="radio" th:attr="name=${number+'_answer'}" required value="3">
+                3
+            </label>
+            <label>
+                <input type="radio" th:attr="name=${number+'_answer'}" required value="4">
+                4
+            </label>
+        </div>
+    </div>
     </div>
     <input type="hidden" name="scrap">
     <div>
