@@ -14,4 +14,9 @@ public class GradingController {
     public String rangeSelection() {
         return "range-selection";
     }
+
+    @GetMapping("/wrong-answer")
+    public String wrongAnswer() {
+        return "wrong-answer";
+    }
 }
