@@ -22,11 +22,8 @@ $scrap_btns.forEach((btn) => {
 
 $submitButtons.forEach(btn => {
     btn.addEventListener('click', ({target}) => {
-        if (target.dataset.type === 'next') {
-            $form.action = '/questions/next'
-        } else {
-            $form.action = '/questions/prev'
-        }
+        const $pageType = document.querySelector('#pageType')
+        $pageType.value = target.dataset.type
     })
 })
 
