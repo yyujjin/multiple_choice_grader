@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AnswerSelectionService {
@@ -17,16 +18,15 @@ public class AnswerSelectionService {
     public AnswerSelectionService() {
     }
 
-    public List<SelectedAnswer> getSelectedAnswers(HttpServletRequest request) {
+    public List<SelectedAnswer> getSelectedAnswers(Map<String, String> parameters) {
         List<SelectedAnswer> selectedAnswers = new ArrayList<>();
 
-        Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String paramName = parameterNames.nextElement();
+        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            String paramName = entry.getKey();
             if (paramName.endsWith("_answer")) {
                 String questionNumberStr = paramName.split("_")[0];
                 int questionNumber = Integer.parseInt(questionNumberStr);
-                int answerNumber = Integer.parseInt(request.getParameter(paramName));
+                int answerNumber = Integer.parseInt(entry.getValue());
 
                 selectedAnswers.add(new SelectedAnswer(questionNumber, answerNumber));
             }

@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 public class AnswerSelectionController {
     private final AnswerSelectionService answerSelectionService;
@@ -28,7 +32,15 @@ public class AnswerSelectionController {
 
     @PostMapping("/questions/next")
     public String next(HttpServletRequest request) {
-        SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(request));
+        Map<String, String> parameters = new HashMap<>();
+
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            parameters.put(paramName, request.getParameter(paramName));
+        }
+
+        SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
 
         int nextPage = answerSelectionService.getPage(request, PagingType.NEXT);
 
