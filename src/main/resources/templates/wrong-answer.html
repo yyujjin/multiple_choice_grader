@@ -20,9 +20,7 @@
             <img src="/images/wrong-answer.jpeg" alt="wrong answer image" width="300px">
         </div>
         <ul class="text-start border p-4">
-            <li>2</li>
-            <li>4</li>
-            <li>6</li>
+            <li th:each="answer : ${wrongAnswers}" th:text="${answer}">문제번호</li>
         </ul>
         <div class="d-flex flex-column align-items-end mb-5 gap-2">
             <a href="/result" class="btn btn-light"> << 돌아가기</a>
