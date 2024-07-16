@@ -28,6 +28,28 @@ public class AnswerSelectionServiceTest {
         verifyAnswer(result, 2, 4);
     }
 
+    @Test
+    void 다음_페이지_가져오기() {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("page", "5");
+        parameters.put("pageType", "next");
+
+        int page = answerSelectionService.getPage(parameters);
+
+        assertThat(page).isEqualTo(6);
+    }
+
+    @Test
+    void 이전_페이지_가져오기() {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("page", "2");
+        parameters.put("pageType", "prev");
+
+        int page = answerSelectionService.getPage(parameters);
+
+        assertThat(page).isEqualTo(1);
+    }
+
     private void verifyAnswer(List<SelectedAnswer> result, int questionNumber, int expectedAnswer) {
         SelectedAnswer answer = result.stream()
                 .filter(a -> a.getNumber() == questionNumber)

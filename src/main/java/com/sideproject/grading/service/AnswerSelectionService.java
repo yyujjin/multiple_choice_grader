@@ -1,13 +1,10 @@
 package com.sideproject.grading.service;
 
-import com.sideproject.grading.domain.PagingType;
 import com.sideproject.grading.domain.SelectedAnswer;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -35,18 +32,20 @@ public class AnswerSelectionService {
         return selectedAnswers;
     }
 
-    public int getPage(HttpServletRequest request, PagingType type) {
+    public int getPage(Map<String, String> parameters) {
         int page = 1;
+        String pageType = "next";
 
-        Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String paramName = parameterNames.nextElement();
+        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            String paramName = entry.getKey();
             if (paramName.equals("page")) {
-                page = Integer.parseInt(request.getParameter(paramName));
+                page = Integer.parseInt(entry.getValue());
+            } else if (paramName.equals("pageType")) {
+                pageType = entry.getValue();
             }
         }
 
-        if (type == PagingType.PREV) {
+        if (pageType.equals("prev")) {
             return --page;
         }
 

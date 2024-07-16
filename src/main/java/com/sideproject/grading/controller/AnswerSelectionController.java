@@ -1,7 +1,5 @@
 package com.sideproject.grading.controller;
 
-import com.sideproject.grading.domain.PagingType;
-import com.sideproject.grading.domain.SelectedAnswer;
 import com.sideproject.grading.domain.SelectedAnswerManager;
 import com.sideproject.grading.service.AnswerSelectionService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,23 +40,10 @@ public class AnswerSelectionController {
 
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
 
-        int nextPage = answerSelectionService.getPage(request, PagingType.NEXT);
+        int nextPage = answerSelectionService.getPage(parameters);
 
         if (nextPage > 6) {
             return "redirect:/result";
-        }
-
-        return "redirect:/answer-selection?page=" + nextPage;
-    }
-
-    @PostMapping("/questions/prev")
-    public String prev(HttpServletRequest request) {
-        SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(request));
-
-        int nextPage = answerSelectionService.getPage(request, PagingType.PREV);
-
-        if (nextPage < 1) {
-            nextPage = 1;
         }
 
         return "redirect:/answer-selection?page=" + nextPage;
