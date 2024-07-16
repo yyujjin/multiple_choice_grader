@@ -1,6 +1,7 @@
 const $scrap_btns = document.querySelectorAll(".scrap-btn");
 const $form = document.querySelector('form')
 const $submitButtons = document.querySelectorAll("form button[type=submit]");
+const $btnMarks = document.querySelectorAll(".btn-mark");
 
 const scraps = {};
 
@@ -26,6 +27,25 @@ $submitButtons.forEach(btn => {
         } else {
             $form.action = '/questions/prev'
         }
+    })
+})
+
+$btnMarks.forEach(btn => {
+    btn.addEventListener('click', ({target}) => {
+        // 알쏭달쏭 또는 모르겠다 버튼 중 하나만 선택 가능
+        const beforeChecked = target.dataset.checked
+
+        // 모든 마크 버튼 비활성화
+        document.querySelectorAll(`.btn-mark[name='${target.name}']`).forEach(mark => {
+            mark.dataset.checked = false
+            mark.checked = false
+        })
+
+        if (beforeChecked === "true") return
+
+        // 누른 버튼 활성화
+        target.dataset.checked = true
+        target.checked = true
     })
 })
 
