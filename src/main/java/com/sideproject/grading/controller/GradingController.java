@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +32,10 @@ public class GradingController {
     @GetMapping("/wrong-answer")
     public String wrongAnswer(Model model) {
         // TODO answer-selection 에서 받아올 데이터
-        List<SelectedAnswer> testAnswers = new ArrayList<>();
-        testAnswers.add(new SelectedAnswer(1, 2));
-        testAnswers.add(new SelectedAnswer(2, 4));
-        testAnswers.add(new SelectedAnswer(3, 2));
+        Map<Integer, SelectedAnswer> testAnswers = new HashMap<>();
+        testAnswers.put(1, new SelectedAnswer(1, 2));
+        testAnswers.put(2, new SelectedAnswer(2, 4));
+        testAnswers.put(3, new SelectedAnswer(3, 2));
         SelectedAnswerManager.setSelectedAnswers(testAnswers);
 
         List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();

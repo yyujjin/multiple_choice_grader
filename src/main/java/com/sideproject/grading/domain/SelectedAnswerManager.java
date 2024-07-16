@@ -1,15 +1,15 @@
 package com.sideproject.grading.domain;
 
-import java.util.List;
+import java.util.Map;
 
 public class  SelectedAnswerManager {
-    private static List<SelectedAnswer> selectedAnswers;
+    private static Map<Integer, SelectedAnswer> selectedAnswers;
 
-    public static List<SelectedAnswer> getSelectedAnswers() {
+    public static Map<Integer, SelectedAnswer> getSelectedAnswers() {
         return selectedAnswers;
     }
 
-    public static void setSelectedAnswers(List<SelectedAnswer> selectedAnswers) {
+    public static void setSelectedAnswers(Map<Integer, SelectedAnswer> selectedAnswers) {
         SelectedAnswerManager.selectedAnswers = selectedAnswers;
     }
 

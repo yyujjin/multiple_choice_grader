@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class WrongAnswerService {
@@ -20,15 +21,15 @@ public class WrongAnswerService {
 
         Map<Integer, Integer> correctAnswers = CorrectAnswers.getAnswers();
 
-        List<SelectedAnswer> selectedAnswers = SelectedAnswerManager.getSelectedAnswers();
+        Map<Integer, SelectedAnswer> selectedAnswers = SelectedAnswerManager.getSelectedAnswers();
 
-        selectedAnswers.forEach(selectedAnswer -> {
-            int answer = selectedAnswer.getAnswer();
-            int correctAnswer = correctAnswers.get(selectedAnswer.getNumber());
-            if (answer != correctAnswer) {
-                wrongAnswers.add(selectedAnswer.getNumber());
+        Set<Map.Entry<Integer, SelectedAnswer>> entries = selectedAnswers.entrySet();
+        for (Map.Entry<Integer, SelectedAnswer> entry: entries) {
+            int correctAnswer = correctAnswers.get(entry.getKey());
+            if (entry.getValue().getAnswer() != correctAnswer) {
+                wrongAnswers.add(entry.getKey());
             }
-        });
+        }
 
         return wrongAnswers;
     }
