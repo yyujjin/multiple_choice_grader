@@ -40,6 +40,7 @@ public class AnswerSelectionController {
 
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
 
+
         int nextPage = answerSelectionService.getPage(parameters);
 
         if (nextPage > 6) {
