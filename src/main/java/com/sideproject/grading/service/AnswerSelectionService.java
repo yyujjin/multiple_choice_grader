@@ -18,7 +18,7 @@ public class AnswerSelectionService {
     }
 
     public Map<Integer, SelectedAnswer> getSelectedAnswers(Map<String, String> parameters) {
-        Map<Integer, SelectedAnswer> selectedAnswers = new HashMap<>();
+        Map<Integer, SelectedAnswer> selectedAnswers = SelectedAnswerManager.getSelectedAnswers();
 
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             String paramName = entry.getKey();
