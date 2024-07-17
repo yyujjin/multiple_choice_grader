@@ -1,19 +1,23 @@
 package com.sideproject.grading.controller;
 
-import com.sideproject.grading.domain.SelectedAnswer;
-import com.sideproject.grading.domain.SelectedAnswerManager;
 import com.sideproject.grading.service.WrongAnswerService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class GradingController {
     private WrongAnswerService wrongAnswerService;
+
+    @Value("${answer.totalCount}")
+    int totalCount;
+
+    @Value("${page.limitCount}")
+    int limitCount;
 
     public GradingController(WrongAnswerService wrongAnswerService) {
         this.wrongAnswerService = wrongAnswerService;
@@ -37,17 +41,21 @@ public class GradingController {
 
     @GetMapping("/wrong-answer")
     public String wrongAnswer(Model model) {
-        // TODO answer-selection 에서 받아올 데이터
-        Map<Integer, SelectedAnswer> testAnswers = new HashMap<>();
-        testAnswers.put(1, new SelectedAnswer(1, 2));
-        testAnswers.put(2, new SelectedAnswer(2, 4));
-        testAnswers.put(3, new SelectedAnswer(3, 2));
-        SelectedAnswerManager.setSelectedAnswers(testAnswers);
-
         List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
 
         model.addAttribute("wrongAnswers", wrongAnswers);
 
         return "wrong-answer";
+    }
+
+    @GetMapping("/wrong-answer-again")
+    public String solveWrongAnswer(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
+        model.addAttribute("questions", wrongAnswers);
+        model.addAttribute("page", page);
+        model.addAttribute("totalCount", wrongAnswers.size());
+        model.addAttribute("limitCount", limitCount);
+
+        return "wrong-answer-again";
     }
 }
