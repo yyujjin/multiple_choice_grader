@@ -30,22 +30,20 @@ public class AnswerSelectionServiceTest {
 
     @Test
     void 다음_페이지_가져오기() {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("page", "5");
-        parameters.put("pageType", "next");
+        answerSelectionService.setPage("5");
+        answerSelectionService.setPageType("next");
 
-        int page = answerSelectionService.getNextPage(parameters);
+        int page = answerSelectionService.getNextPage();
 
         assertThat(page).isEqualTo(6);
     }
 
     @Test
     void 이전_페이지_가져오기() {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("page", "2");
-        parameters.put("pageType", "prev");
+        answerSelectionService.setPage("2");
+        answerSelectionService.setPageType("prev");
 
-        int page = answerSelectionService.getNextPage(parameters);
+        int page = answerSelectionService.getNextPage();
 
         assertThat(page).isEqualTo(1);
     }

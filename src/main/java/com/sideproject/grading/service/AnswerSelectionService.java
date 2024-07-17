@@ -45,27 +45,7 @@ public class AnswerSelectionService {
         return selectedAnswers;
     }
 
-    public int getNextPage(Map<String, String> parameters) {
-        int page = 1;
-        String pageType = "next";
-
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-            String paramName = entry.getKey();
-            if (paramName.equals("page")) {
-                page = Integer.parseInt(entry.getValue());
-            } else if (paramName.equals("pageType")) {
-                pageType = entry.getValue();
-            }
-        }
-
-        if (pageType.equals("prev")) {
-            return --page;
-        }
-
-        return ++page;
-    }
-
-    public int newGetNextPage() {
+    public int getNextPage() {
         if (pageType.equals("prev")) {
             return --page;
         }

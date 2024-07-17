@@ -64,16 +64,16 @@ public class GradingController {
             parameters.put(paramName, request.getParameter(paramName));
         }
 
+        answerSelectionService.setPage(parameters.get("page"));
+        answerSelectionService.setPageType(parameters.get("pageType"));
+
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
 
-
-        int nextPage = answerSelectionService.getNextPage(parameters);
-
-        if (!answerSelectionService.hasNext(nextPage, totalCount, limitCount)) {
+        if (!answerSelectionService.hasNext(answerSelectionService.getPage(), totalCount, limitCount)) {
             return "redirect:/result";
         }
 
-        return "redirect:/answer-selection?page=" + nextPage;
+        return "redirect:/answer-selection?page=" + answerSelectionService.getNextPage();
     }
 
     @GetMapping("/wrong-answer")
@@ -118,6 +118,6 @@ public class GradingController {
             return "redirect:/result";
         }
 
-        return "redirect:/wrong-answer-again?page=" + answerSelectionService.newGetNextPage();
+        return "redirect:/wrong-answer-again?page=" + answerSelectionService.getNextPage();
     }
 }
