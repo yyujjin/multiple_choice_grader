@@ -22,10 +22,10 @@ public class AnswerSelectionServiceTest {
         parameters.put("1_answer", "1");
         parameters.put("2_answer", "4");
 
-        List<SelectedAnswer> result = answerSelectionService.getSelectedAnswers(parameters);
+        Map<Integer, SelectedAnswer> result = answerSelectionService.getSelectedAnswers(parameters);
 
-        verifyAnswer(result, 1, 1);
-        verifyAnswer(result, 2, 4);
+        assertThat(result.get(1).getAnswer()).isEqualTo(1);
+        assertThat(result.get(2).getAnswer()).isEqualTo(4);
     }
 
     @Test
@@ -49,14 +49,4 @@ public class AnswerSelectionServiceTest {
 
         assertThat(page).isEqualTo(1);
     }
-
-    private void verifyAnswer(List<SelectedAnswer> result, int questionNumber, int expectedAnswer) {
-        SelectedAnswer answer = result.stream()
-                .filter(a -> a.getNumber() == questionNumber)
-                .findFirst()
-                .orElse(null);
-
-        assertThat(answer.getAnswer()).isEqualTo(expectedAnswer);
-    }
-
 }

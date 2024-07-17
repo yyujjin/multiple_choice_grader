@@ -1,10 +1,12 @@
 package com.sideproject.grading.service;
 
 import com.sideproject.grading.domain.SelectedAnswer;
+import com.sideproject.grading.domain.SelectedAnswerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +17,8 @@ public class AnswerSelectionService {
     public AnswerSelectionService() {
     }
 
-    public List<SelectedAnswer> getSelectedAnswers(Map<String, String> parameters) {
-        List<SelectedAnswer> selectedAnswers = new ArrayList<>();
+    public Map<Integer, SelectedAnswer> getSelectedAnswers(Map<String, String> parameters) {
+        Map<Integer, SelectedAnswer> selectedAnswers = new HashMap<>();
 
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             String paramName = entry.getKey();
@@ -25,7 +27,7 @@ public class AnswerSelectionService {
                 int questionNumber = Integer.parseInt(questionNumberStr);
                 int answerNumber = Integer.parseInt(entry.getValue());
 
-                selectedAnswers.add(new SelectedAnswer(questionNumber, answerNumber));
+                selectedAnswers.put(questionNumber, new SelectedAnswer(questionNumber, answerNumber));
             }
         }
 
