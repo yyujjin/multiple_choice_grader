@@ -45,6 +45,37 @@ public class GradingController {
         return "result";
     }
 
+    @GetMapping("/answer-selection")
+    public String answerSelection(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        model.addAttribute("page", page);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("limitCount", limitCount);
+
+        return "answer-selection";
+    }
+
+    @PostMapping("/questions/next")
+    public String next(HttpServletRequest request) {
+        Map<String, String> parameters = new HashMap<>();
+
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            parameters.put(paramName, request.getParameter(paramName));
+        }
+
+        SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
+
+
+        int nextPage = answerSelectionService.getPage(parameters);
+
+        if (nextPage > totalCount / limitCount) {
+            return "redirect:/result";
+        }
+
+        return "redirect:/answer-selection?page=" + nextPage;
+    }
+
     @GetMapping("/wrong-answer")
     public String wrongAnswer(Model model) {
         List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
@@ -66,7 +97,7 @@ public class GradingController {
     }
 
     @PostMapping("/wrong-questions/next")
-    public String next(HttpServletRequest request) {
+    public String nextWrongQuestions(HttpServletRequest request) {
         Map<String, String> parameters = new HashMap<>();
 
         Enumeration<String> parameterNames = request.getParameterNames();
