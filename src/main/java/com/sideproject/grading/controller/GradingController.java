@@ -93,8 +93,6 @@ public class GradingController {
         model.addAttribute("questions", wrongAnswerService.sliceWrongAnswers(page, limitCount));
         model.addAttribute("page", page);
         model.addAttribute("hasNext", answerSelectionService.hasNext(page, total, limitCount));
-        model.addAttribute("totalCount", total );
-        model.addAttribute("limitCount", limitCount);
 
         return "wrong-answer-again";
     }
