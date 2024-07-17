@@ -7,7 +7,7 @@
 </head>
 <body>
 <form method="post" action="/questions/next" class="container p-5 d-flex gap-3 flex-column justify-content-center align-items-center">
-    <div class="w-50 d-flex flex-column mb-5" th:each="number : ${#numbers.sequence((page - 1) * 5 + 1, page * 5)}">
+    <div class="w-50 d-flex flex-column mb-5" th:each="number : ${#numbers.sequence((page - 1) * limitCount + 1, page * limitCount)}">
         <div class="d-flex align-items-center mb-2">
             <span class="pe-2" th:text="${number} + 번">1번</span>
             <div>
@@ -50,7 +50,7 @@
                 th:classappend="${page == 1} ? 'disabled' : ''"> << 이전 페이지
         </button>
         <button data-type="next" class="btn btn-primary" type="submit"
-                th:text="${page == 6} ? ' >> 결과화면' : ' >> 다음 페이지'"></button>
+                th:text="${page == totalCount / limitCount} ? ' >> 결과화면' : ' >> 다음 페이지'"></button>
     </div>
 </form>
 <script src="/js/answer-selection.js"></script>
