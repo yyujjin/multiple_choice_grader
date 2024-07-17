@@ -5,16 +5,27 @@ import com.sideproject.grading.domain.SelectedAnswerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
 public class AnswerSelectionService {
+    int page;
+    String pageType;
 
     @Autowired
     public AnswerSelectionService() {
+    }
+
+    public void setPage(String page) {
+        this.page = Integer.parseInt(page);
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPageType(String pageType) {
+        this.pageType = pageType;
     }
 
     public Map<Integer, SelectedAnswer> getSelectedAnswers(Map<String, String> parameters) {
@@ -34,7 +45,7 @@ public class AnswerSelectionService {
         return selectedAnswers;
     }
 
-    public int getPage(Map<String, String> parameters) {
+    public int getNextPage(Map<String, String> parameters) {
         int page = 1;
         String pageType = "next";
 
@@ -52,5 +63,17 @@ public class AnswerSelectionService {
         }
 
         return ++page;
+    }
+
+    public int newGetNextPage() {
+        if (pageType.equals("prev")) {
+            return --page;
+        }
+
+        return ++page;
+    }
+
+    public boolean hasNext(int page, int total, int limit) {
+        return page < Math.ceil((double) total / limit);
     }
 }

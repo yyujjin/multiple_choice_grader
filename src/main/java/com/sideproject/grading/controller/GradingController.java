@@ -67,9 +67,9 @@ public class GradingController {
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
 
 
-        int nextPage = answerSelectionService.getPage(parameters);
+        int nextPage = answerSelectionService.getNextPage(parameters);
 
-        if (nextPage > totalCount / limitCount) {
+        if (!answerSelectionService.hasNext(nextPage, totalCount, limitCount)) {
             return "redirect:/result";
         }
 
@@ -88,9 +88,12 @@ public class GradingController {
     @GetMapping("/wrong-answer-again")
     public String solveWrongAnswer(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
         List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
+        int total = wrongAnswers.size();
+
         model.addAttribute("questions", wrongAnswers.subList((page - 1) * limitCount, page * limitCount));
         model.addAttribute("page", page);
-        model.addAttribute("totalCount", wrongAnswers.size());
+        model.addAttribute("hasNext", answerSelectionService.hasNext(page, total, limitCount));
+        model.addAttribute("totalCount", total );
         model.addAttribute("limitCount", limitCount);
 
         return "wrong-answer-again";
@@ -106,15 +109,17 @@ public class GradingController {
             parameters.put(paramName, request.getParameter(paramName));
         }
 
+        answerSelectionService.setPage(parameters.get("page"));
+        answerSelectionService.setPageType(parameters.get("pageType"));
+
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
 
+        int total = wrongAnswerService.getWrongAnswers().size();
 
-        int nextPage = answerSelectionService.getPage(parameters);
-
-        if (nextPage > wrongAnswerService.getWrongAnswers().size() / limitCount) {
+        if (!answerSelectionService.hasNext(answerSelectionService.getPage(), total, limitCount)) {
             return "redirect:/result";
         }
 
-        return "redirect:/answer-selection?page=" + nextPage;
+        return "redirect:/answer-selection?page=" + answerSelectionService.newGetNextPage();
     }
 }

@@ -50,7 +50,7 @@
                 th:classappend="${page == 1} ? 'disabled' : ''"> << 이전 페이지
         </button>
         <button data-type="next" class="btn btn-primary" type="submit"
-                th:text="${page == totalCount / limitCount} ? ' >> 결과화면' : ' >> 다음 페이지'"></button>
+                th:text="${hasNext} ? ' >> 다음 페이지' : ' >> 결과화면'"></button>
     </div>
 </form>
 <script src="/js/answer-selection.js"></script>
