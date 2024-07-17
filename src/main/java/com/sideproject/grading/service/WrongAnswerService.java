@@ -13,10 +13,11 @@ import java.util.Set;
 
 @Service
 public class WrongAnswerService {
+    List<Integer> wrongAnswers;
     @Autowired
     public WrongAnswerService() {}
 
-    public List<Integer> getWrongAnswers() {
+    public void setWrongAnswers() {
         List<Integer> wrongAnswers = new ArrayList<>();
 
         Map<Integer, Integer> correctAnswers = CorrectAnswers.getAnswers();
@@ -31,6 +32,18 @@ public class WrongAnswerService {
             }
         }
 
+        this.wrongAnswers = wrongAnswers;
+    }
+
+    public List<Integer> getWrongAnswers() {
         return wrongAnswers;
+    }
+
+    public List<Integer> sliceWrongAnswers(int page, int limitCount) {
+        int end = page * limitCount;
+        if (end > wrongAnswers.size()) {
+            end = wrongAnswers.size();
+        }
+        return wrongAnswers.subList((page - 1) * limitCount, end);
     }
 }

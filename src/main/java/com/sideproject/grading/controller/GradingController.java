@@ -78,19 +78,19 @@ public class GradingController {
 
     @GetMapping("/wrong-answer")
     public String wrongAnswer(Model model) {
-        List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
+        wrongAnswerService.setWrongAnswers();
 
-        model.addAttribute("wrongAnswers", wrongAnswers);
+        model.addAttribute("wrongAnswers", wrongAnswerService.getWrongAnswers());
 
         return "wrong-answer";
     }
 
     @GetMapping("/wrong-answer-again")
     public String solveWrongAnswer(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
-        List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
-        int total = wrongAnswers.size();
+        wrongAnswerService.setWrongAnswers();
+        int total = wrongAnswerService.getWrongAnswers().size();
 
-        model.addAttribute("questions", wrongAnswers.subList((page - 1) * limitCount, page * limitCount));
+        model.addAttribute("questions", wrongAnswerService.sliceWrongAnswers(page, limitCount));
         model.addAttribute("page", page);
         model.addAttribute("hasNext", answerSelectionService.hasNext(page, total, limitCount));
         model.addAttribute("totalCount", total );
@@ -120,6 +120,6 @@ public class GradingController {
             return "redirect:/result";
         }
 
-        return "redirect:/answer-selection?page=" + answerSelectionService.newGetNextPage();
+        return "redirect:/wrong-answer-again?page=" + answerSelectionService.newGetNextPage();
     }
 }
