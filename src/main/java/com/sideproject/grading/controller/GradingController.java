@@ -1,16 +1,21 @@
 package com.sideproject.grading.controller;
 
+import com.sideproject.grading.domain.SelectedAnswerManager;
+import com.sideproject.grading.service.AnswerSelectionService;
 import com.sideproject.grading.service.WrongAnswerService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class GradingController {
+    private AnswerSelectionService answerSelectionService;
     private WrongAnswerService wrongAnswerService;
 
     @Value("${answer.totalCount}")
@@ -19,7 +24,8 @@ public class GradingController {
     @Value("${page.limitCount}")
     int limitCount;
 
-    public GradingController(WrongAnswerService wrongAnswerService) {
+    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService) {
+        this.answerSelectionService = answerSelectionService;
         this.wrongAnswerService = wrongAnswerService;
     }
 
@@ -51,11 +57,33 @@ public class GradingController {
     @GetMapping("/wrong-answer-again")
     public String solveWrongAnswer(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
         List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
-        model.addAttribute("questions", wrongAnswers);
+        model.addAttribute("questions", wrongAnswers.subList((page - 1) * limitCount, page * limitCount));
         model.addAttribute("page", page);
         model.addAttribute("totalCount", wrongAnswers.size());
         model.addAttribute("limitCount", limitCount);
 
         return "wrong-answer-again";
+    }
+
+    @PostMapping("/wrong-questions/next")
+    public String next(HttpServletRequest request) {
+        Map<String, String> parameters = new HashMap<>();
+
+        Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            parameters.put(paramName, request.getParameter(paramName));
+        }
+
+        SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
+
+
+        int nextPage = answerSelectionService.getPage(parameters);
+
+        if (nextPage > wrongAnswerService.getWrongAnswers().size() / limitCount) {
+            return "redirect:/result";
+        }
+
+        return "redirect:/answer-selection?page=" + nextPage;
     }
 }
