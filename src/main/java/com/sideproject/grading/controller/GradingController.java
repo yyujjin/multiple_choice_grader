@@ -15,8 +15,8 @@ import java.util.*;
 
 @Controller
 public class GradingController {
-    private AnswerSelectionService answerSelectionService;
-    private WrongAnswerService wrongAnswerService;
+    private final AnswerSelectionService answerSelectionService;
+    private final WrongAnswerService wrongAnswerService;
 
     @Value("${answer.totalCount}")
     int totalCount;
@@ -47,9 +47,12 @@ public class GradingController {
 
     @GetMapping("/answer-selection")
     public String answerSelection(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        answerSelectionService.setQuestions(totalCount);
+
+        model.addAttribute("questions", answerSelectionService.sliceAnswers(page, limitCount));
+        model.addAttribute("action", "/questions/next");
         model.addAttribute("page", page);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("limitCount", limitCount);
+        model.addAttribute("hasNext", answerSelectionService.hasNext(page, totalCount, limitCount));
 
         return "answer-selection";
     }
@@ -87,14 +90,15 @@ public class GradingController {
 
     @GetMapping("/wrong-answer-again")
     public String solveWrongAnswer(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
-        wrongAnswerService.setWrongAnswers();
+//        wrongAnswerService.setWrongAnswers();
         int total = wrongAnswerService.getWrongAnswers().size();
 
         model.addAttribute("questions", wrongAnswerService.sliceWrongAnswers(page, limitCount));
+        model.addAttribute("action", "/wrong-questions/next");
         model.addAttribute("page", page);
         model.addAttribute("hasNext", answerSelectionService.hasNext(page, total, limitCount));
 
-        return "wrong-answer-again";
+        return "answer-selection";
     }
 
     @PostMapping("/wrong-questions/next")

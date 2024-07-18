@@ -5,15 +5,26 @@ import com.sideproject.grading.domain.SelectedAnswerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class AnswerSelectionService {
     int page;
     String pageType;
+    List<Integer> questions;
 
     @Autowired
     public AnswerSelectionService() {
+    }
+
+    public void setQuestions(int totalCount) {
+        List<Integer> questions = new ArrayList<>();
+        for (int i = 0; i < totalCount; i++) {
+            questions.add(i+1);
+        }
+        this.questions = questions;
     }
 
     public void setPage(String page) {
@@ -55,5 +66,13 @@ public class AnswerSelectionService {
 
     public boolean hasNext(int page, int total, int limit) {
         return page < Math.ceil((double) total / limit);
+    }
+
+    public List<Integer> sliceAnswers(int page, int limitCount) {
+        int end = page * limitCount;
+        if (end > questions.size()) {
+            end = questions.size();
+        }
+        return questions.subList((page - 1) * limitCount, end);
     }
 }
