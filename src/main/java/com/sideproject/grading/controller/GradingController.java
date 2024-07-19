@@ -41,9 +41,7 @@ public class GradingController {
 //    }
 
     @GetMapping("/result")
-    public String result(Model model) {
-        model.addAttribute("selectedAnswerCount",totalCount);
-
+    public String result() {
         return "result";
     }
 
