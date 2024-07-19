@@ -6,19 +6,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class AnswerSelectionService {
+    int page;
+    String pageType;
+    List<Integer> questions;
 
     @Autowired
     public AnswerSelectionService() {
     }
 
+    public void setQuestions(int totalCount) {
+        List<Integer> questions = new ArrayList<>();
+        for (int i = 0; i < totalCount; i++) {
+            questions.add(i+1);
+        }
+        this.questions = questions;
+    }
+
+    public void setPage(String page) {
+        this.page = Integer.parseInt(page);
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPageType(String pageType) {
+        this.pageType = pageType;
+    }
+
     public Map<Integer, SelectedAnswer> getSelectedAnswers(Map<String, String> parameters) {
-        Map<Integer, SelectedAnswer> selectedAnswers = new HashMap<>();
+        Map<Integer, SelectedAnswer> selectedAnswers = SelectedAnswerManager.getSelectedAnswers();
 
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             String paramName = entry.getKey();
@@ -34,23 +56,23 @@ public class AnswerSelectionService {
         return selectedAnswers;
     }
 
-    public int getPage(Map<String, String> parameters) {
-        int page = 1;
-        String pageType = "next";
-
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-            String paramName = entry.getKey();
-            if (paramName.equals("page")) {
-                page = Integer.parseInt(entry.getValue());
-            } else if (paramName.equals("pageType")) {
-                pageType = entry.getValue();
-            }
-        }
-
+    public int getNextPage() {
         if (pageType.equals("prev")) {
             return --page;
         }
 
         return ++page;
+    }
+
+    public boolean hasNext(int page, int total, int limit) {
+        return page < Math.ceil((double) total / limit);
+    }
+
+    public List<Integer> sliceAnswers(int page, int limitCount) {
+        int end = page * limitCount;
+        if (end > questions.size()) {
+            end = questions.size();
+        }
+        return questions.subList((page - 1) * limitCount, end);
     }
 }

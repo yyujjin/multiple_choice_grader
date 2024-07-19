@@ -27,6 +27,7 @@ public class WrongAnswerServiceTest {
         testAnswers.put(3, new SelectedAnswer(3, 3));
         SelectedAnswerManager.setSelectedAnswers(testAnswers);
 
+        wrongAnswerService.setWrongAnswers();
         List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
 
         assertThat(wrongAnswers.size()).isEqualTo(2);
