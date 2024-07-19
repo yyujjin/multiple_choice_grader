@@ -17,4 +17,11 @@ public class SelectedAnswer {
         return answer;
     }
 
+    @Override
+    public String toString() {
+        return "SelectedAnswer{" +
+                "number=" + number +
+                ", answer=" + answer +
+                '}';
+    }
 }
