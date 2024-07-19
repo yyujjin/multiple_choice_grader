@@ -12,8 +12,8 @@
             <div class="text-center">
                 <h1>결과보기 !</h1>
                 <ul class="text-start border p-4">
-                    <li>선택한 문제 수 :
-                    </li>
+                    <li th:each="answer : ${wrongAnswers}" th:text="${answer}">문제번호</li>
+                    <li>선택한 문제 수 : <span th:text="${selectedAnswerCount}"></span> </li>
                     <li>맞힌 문제 수 :
                     </li>
                 </ul>
