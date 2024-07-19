@@ -124,4 +124,9 @@ public class GradingController {
 
         return "redirect:/wrong-answer-again?page=" + answerSelectionService.getNextPage();
     }
+
+    @GetMapping("/scrape")
+    public  String scrape() {
+        return "/scrape";
+    }
 }
