@@ -2,17 +2,29 @@ package com.sideproject.grading.domain;
 
 
 public class Question {
-    private int number;
-    //알쏭달쏭
+    //문제 번호가 필요있는지 몰라서 일단 주석 처리
+    //private int number;
+    //알쏭달쏭,모르겠다
+    //중복 선택 불가능하니 하나로 처리
+    private String scrapeType;
     private boolean isScrap;
-    //모르겠다
-    private boolean isWrong;
 
-    public Question(int number) {
-        this.number = number;
+
+
+    public Question (String scrapeType,boolean isScrap ) {
+        this.scrapeType = scrapeType;
+        this.isScrap = isScrap;
     }
 
-    public int getNumber() {
-        return number;
+    @Override
+    public String toString() {
+        return "Question{" +
+                "scrapeType='" + scrapeType + '\'' +
+                ", isScrap=" + isScrap +
+                '}';
     }
+
+    // public int getNumber() {
+     //   return number;
+    //}
 }
