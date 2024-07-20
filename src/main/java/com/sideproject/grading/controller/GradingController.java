@@ -4,6 +4,8 @@ import com.sideproject.grading.domain.SelectedAnswerManager;
 import com.sideproject.grading.service.AnswerSelectionService;
 import com.sideproject.grading.service.WrongAnswerService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import java.util.*;
 
 @Controller
 public class GradingController {
+    private static final Logger log = LoggerFactory.getLogger(GradingController.class);
     private final AnswerSelectionService answerSelectionService;
     private final WrongAnswerService wrongAnswerService;
 
@@ -64,7 +67,10 @@ public class GradingController {
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
+
             parameters.put(paramName, request.getParameter(paramName));
+            //순서대로 정렬안됨
+            log.info("parameters: {}", parameters);
         }
 
         answerSelectionService.setPage(parameters.get("page"));

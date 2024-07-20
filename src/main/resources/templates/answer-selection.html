@@ -11,12 +11,12 @@
         <div class="d-flex align-items-center mb-2">
             <span class="pe-2" th:text="${number} + 번">1번</span>
             <div>
-                <input type="radio" class="btn-check btn-mark" th:attr="id=${'btn-check-scrap-'+number}, name=${number+'-mark'}" autocomplete="off">
+                <input type="radio" class="btn-check btn-mark" th:attr="id=${'btn-check-scrap-'+number}, name=${number+'-isConfusing-mark'}" autocomplete="off">
                 <label class="btn btn-outline-secondary" th:attr="for=${'btn-check-scrap-'+number}">
                     <img src="/images/scrap.jpeg" width="20"/>
                     알쏭달쏭
                 </label>
-                <input type="radio" class="btn-check btn-mark" th:attr="id=${'btn-check-wrong-'+number}, name=${number+'-mark'}" autocomplete="off">
+                <input type="radio" class="btn-check btn-mark" th:attr="id=${'btn-check-wrong-'+number}, name=${number+'-isUnknown-mark'}" autocomplete="off">
                 <label class="btn btn-outline-secondary" th:attr="for=${'btn-check-wrong-'+number}">
                     <img src="/images/wrong.jpeg" width="20"/>
                     모르겠다
@@ -42,6 +42,7 @@
             </label>
         </div>
     </div>
+<!--TODO:scrap 이건 어디 필요한지 물어보기 -->
     <input type="hidden" name="scrap">
     <input type="hidden" name="page" th:attr="value=${page}">
     <input type="hidden" name="pageType" id="pageType">
