@@ -1,5 +1,7 @@
 package com.sideproject.grading.controller;
 
+import com.sideproject.grading.domain.Question;
+import com.sideproject.grading.domain.QuestionManager;
 import com.sideproject.grading.domain.SelectedAnswerManager;
 import com.sideproject.grading.service.AnswerSelectionService;
 import com.sideproject.grading.service.WrongAnswerService;
@@ -77,11 +79,12 @@ public class GradingController {
         answerSelectionService.setPageType(parameters.get("pageType"));
 
         //답 선택 메서드에  파라미터 넘겨서 서비스에서 걸러서 정리하고 선택한 답 데이터 저장소에 넣음.
+        //배열을 전역 변수로 만들고 -> 서비스로 이동 -> get배열 후 put으로 넣고 배열 리턴 -> 컨트롤러에서 set배열
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
-        //일단 파라미터 넘기기
-        answerSelectionService.getScrapedAnswers(parameters);
-        //그럼 나는 위에랑 똑같이 만드는데 스크랩으로 만들고 그리고
-        //Question을 이용해서 QuestionManeger을 만들고 스크랩 페이지에 해당 리스트를 내보내는 코드를 만들면 될것같음.
+
+        QuestionManager.setSelectedScrapAnswers(answerSelectionService.getScrapedAnswers(parameters));
+
+        log.info("CHECK SCRAPE TO CONTROLLER : {}", QuestionManager.getSelectedScrapAnswers());
 
         if (!answerSelectionService.hasNext(answerSelectionService.getPage(), totalCount, limitCount)) {
             return "redirect:/result";
@@ -126,7 +129,7 @@ public class GradingController {
         answerSelectionService.setPageType(parameters.get("pageType"));
 
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
-
+        
         int total = wrongAnswerService.getWrongAnswers().size();
 
         if (!answerSelectionService.hasNext(answerSelectionService.getPage(), total, limitCount)) {
@@ -137,8 +140,7 @@ public class GradingController {
     }
 
     @GetMapping("/scrape")
-    public  String scrape() {
-
+    public String scrape() {
 
 
         return "/scrape";
