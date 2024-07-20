@@ -83,12 +83,14 @@ public class AnswerSelectionService {
     //스크랩 파라미터 거르는거 만들기
     public Map<Integer, SelectedAnswer> getScrapedAnswers(Map<String, String> parameters) {
         //이거Question으로 바꾸기
+        //관리에 넣고 또 거기에 있는 걸 가져와서 다시 넣어야 하니까.
+
+
         Map<Integer, SelectedAnswer> selectedAnswers = SelectedAnswerManager.getSelectedAnswers();
 
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             String paramName = entry.getKey();
-            //이거로 끝나는 파라미터 있으면
-            //0,1, 나누기
+
             if (paramName.endsWith("_mark")) {
                 String questionNumberStr = paramName.split("_")[0];
                 String questionScrapeType = paramName.split("_")[1];
