@@ -76,7 +76,12 @@ public class GradingController {
         answerSelectionService.setPage(parameters.get("page"));
         answerSelectionService.setPageType(parameters.get("pageType"));
 
+        //답 선택 메서드에  파라미터 넘겨서 서비스에서 걸러서 정리하고 선택한 답 데이터 저장소에 넣음.
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
+        //일단 파라미터 넘기기
+        answerSelectionService.getScrapedAnswers(parameters);
+        //그럼 나는 위에랑 똑같이 만드는데 스크랩으로 만들고 그리고
+        //Question을 이용해서 QuestionManeger을 만들고 스크랩 페이지에 해당 리스트를 내보내는 코드를 만들면 될것같음.
 
         if (!answerSelectionService.hasNext(answerSelectionService.getPage(), totalCount, limitCount)) {
             return "redirect:/result";
@@ -133,6 +138,9 @@ public class GradingController {
 
     @GetMapping("/scrape")
     public  String scrape() {
+
+
+
         return "/scrape";
     }
 }

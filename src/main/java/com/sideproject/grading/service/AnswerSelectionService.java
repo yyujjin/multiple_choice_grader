@@ -2,6 +2,8 @@ package com.sideproject.grading.service;
 
 import com.sideproject.grading.domain.SelectedAnswer;
 import com.sideproject.grading.domain.SelectedAnswerManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.Map;
 
 @Service
 public class AnswerSelectionService {
+    private static final Logger log = LoggerFactory.getLogger(AnswerSelectionService.class);
     int page;
     String pageType;
     List<Integer> questions;
@@ -75,4 +78,34 @@ public class AnswerSelectionService {
         }
         return questions.subList((page - 1) * limitCount, end);
     }
+
+
+    //스크랩 파라미터 거르는거 만들기
+    public Map<Integer, SelectedAnswer> getScrapedAnswers(Map<String, String> parameters) {
+        //이거Question으로 바꾸기
+        Map<Integer, SelectedAnswer> selectedAnswers = SelectedAnswerManager.getSelectedAnswers();
+
+        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            String paramName = entry.getKey();
+            //이거로 끝나는 파라미터 있으면
+            //0,1, 나누기
+            if (paramName.endsWith("_mark")) {
+                String questionNumberStr = paramName.split("_")[0];
+                String questionScrapeType = paramName.split("_")[1];
+
+                log.info("questionNumberStr : {}",questionNumberStr);
+                log.info("questionScrapeType : {}", questionScrapeType);
+
+//                //문제 숫자 인트로 만들기
+//                int questionNumber = Integer.parseInt(questionNumberStr);
+//                //불리언으로 만들기
+//                int answerNumber = Integer.parseInt(entry.getValue());
+//
+//                selectedAnswers.put(questionNumber, new SelectedAnswer(questionNumber, answerNumber));
+            }
+        }
+
+        return selectedAnswers;
+    }
+
 }
