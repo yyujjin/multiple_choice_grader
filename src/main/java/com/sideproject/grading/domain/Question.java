@@ -9,11 +9,13 @@ public class Question {
     private String scrapeType;
     private boolean isScrap;
 
-
-
     public Question (String scrapeType,boolean isScrap ) {
         this.scrapeType = scrapeType;
         this.isScrap = isScrap;
+    }
+
+    public String getScrapeType() {
+        return scrapeType;
     }
 
     @Override
