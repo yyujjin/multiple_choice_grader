@@ -152,6 +152,8 @@ public class GradingController {
         log.info("getConfusing : {}", getConfusingList);
         log.info("getUnknown : {} ", getUnknownList);
 
+        model.addAttribute("confusingList", getConfusingList);
+        model.addAttribute("unknownList", getUnknownList);
 
         return "/scrape";
     }
