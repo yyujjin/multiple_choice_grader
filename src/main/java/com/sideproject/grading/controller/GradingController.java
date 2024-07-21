@@ -39,6 +39,9 @@ public class GradingController {
 
     @GetMapping("/")
     public String start() {
+        //스크랩 리스트 초기화
+        scrapeService.resetScrape();
+
         return "start";
     }
 

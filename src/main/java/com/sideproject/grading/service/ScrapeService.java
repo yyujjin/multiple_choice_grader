@@ -91,4 +91,15 @@ public class ScrapeService {
     public List<Integer> getUnknown() {
         return unknownList;
     }
+
+    public  void resetScrape() {
+        //문제 리스트 자체에서 지우기
+        QuestionManager.getSelectedScrapAnswers().clear();
+        //서비스단 리스트 초기화
+        if (this.confusingList != null && this.unknownList!=null) {
+            confusingList.clear();
+            unknownList.clear();
+        }
+
+    }
 }
