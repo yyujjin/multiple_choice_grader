@@ -31,7 +31,7 @@ public class GradingController {
     @Value("${page.limitCount}")
     int limitCount;
 
-    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService,ScrapeService scrapeService) {
+    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService, ScrapeService scrapeService) {
         this.answerSelectionService = answerSelectionService;
         this.wrongAnswerService = wrongAnswerService;
         this.scrapeService = scrapeService;
@@ -143,7 +143,14 @@ public class GradingController {
     }
 
     @GetMapping("/scrape")
-    public String scrape() {
+    public String scrape(Model model) {
+        //TODO:일단 가져와지는지 보고 모델 만들기
+        //TODO:NULL 체크하기
+        scrapeService.splitScrapeType();
+        List<Integer> getConfusingList = scrapeService.getConfusing();
+        List<Integer> getUnknownList = scrapeService.getUnknown();
+        log.info("getConfusing : {}", getConfusingList);
+        log.info("getUnknown : {} ", getUnknownList);
 
 
         return "/scrape";
