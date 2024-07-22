@@ -3,6 +3,7 @@ package com.sideproject.grading.controller;
 import com.sideproject.grading.domain.SelectedAnswer;
 import com.sideproject.grading.domain.SelectedAnswerManager;
 import com.sideproject.grading.service.AnswerSelectionService;
+import com.sideproject.grading.service.CorrectAnswerService;
 import com.sideproject.grading.service.WrongAnswerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -21,16 +22,17 @@ public class GradingController {
     private static final Logger log = LoggerFactory.getLogger(GradingController.class);
     private final AnswerSelectionService answerSelectionService;
     private final WrongAnswerService wrongAnswerService;
-
+    private final CorrectAnswerService correctAnswerService;
     @Value("${answer.totalCount}")
     int totalCount;
 
     @Value("${page.limitCount}")
     int limitCount;
 
-    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService) {
+    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService,CorrectAnswerService correctAnswerService) {
         this.answerSelectionService = answerSelectionService;
         this.wrongAnswerService = wrongAnswerService;
+        this.correctAnswerService = correctAnswerService;
     }
 
     @GetMapping("/")
@@ -47,11 +49,7 @@ public class GradingController {
     @GetMapping("/result")
     public String result(Model model) {
 
-        wrongAnswerService.setWrongAnswers();
-        List<Integer> wrongAnswers = wrongAnswerService.getWrongAnswers();
-        int correctAnswerCount = totalCount-wrongAnswers.size();
-
-        log.info("CORRECT ANSWER : {}" , correctAnswerCount);
+        int correctAnswerCount = correctAnswerService.getCorrectAnswerCount(totalCount);
 
         model.addAttribute("totalCount",totalCount);
         model.addAttribute("correctAnswerCount",correctAnswerCount);
