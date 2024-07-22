@@ -14,9 +14,11 @@ public class Question {
         this.isScrap = isScrap;
     }
 
+
     public String getScrapeType() {
         return scrapeType;
     }
+    public boolean getIsScrap(){return isScrap;}
 
     @Override
     public String toString() {

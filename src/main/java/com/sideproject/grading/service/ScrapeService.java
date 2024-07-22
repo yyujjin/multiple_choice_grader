@@ -39,6 +39,9 @@ public class ScrapeService {
                 //문제 숫자 인트로 만들기
                 int questionNumber = Integer.parseInt(questionNumberStr);
 
+                //현재는 중복 설정안되게 버튼 하나의 값만 넘어오지만
+                //추후에 버튼 중복 설정 가능하도록 설정 변경 시 bool값을 하기위해 t/f값 넣는 코드로 작성
+
                 //알쏭달쏭이면 처리하는 로직
                 if (questionScrapeType.equals("isConfusing")) {
                     selectedScrapeAnswers.put(questionNumber, new Question("Confusing", true));
@@ -69,12 +72,12 @@ public class ScrapeService {
         Set<Map.Entry<Integer, Question>> entries = scrapedAnswers.entrySet();
         for (Map.Entry<Integer, Question> entry : entries) {
             //알쏭달쏭 버튼
-            if(entry.getValue().getScrapeType().equals("Confusing")){
+            if(entry.getValue().getScrapeType().equals("Confusing") && entry.getValue().getIsScrap()){
                 confusingList.add(entry.getKey());
-                //이렇게 안하면 다른 메서드에서 인식못하니 this 해줘야함
-                //안해주면 여기 스코프 안에서만 리스트 만들어짐
                 this.confusingList = confusingList;
-            }else{ //모르겠다 버튼
+            }
+            //모르겠다 버튼
+            if(entry.getValue().getScrapeType().equals("Unknown") && entry.getValue().getIsScrap()){
                 unknownList.add(entry.getKey());
                 this.unknownList = unknownList;
             }
