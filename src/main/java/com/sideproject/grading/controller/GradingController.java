@@ -77,8 +77,7 @@ public class GradingController {
             String paramName = parameterNames.nextElement();
 
             parameters.put(paramName, request.getParameter(paramName));
-            //순서대로 정렬안됨
-            log.info("parameters: {}", parameters);
+
         }
 
         answerSelectionService.setPage(parameters.get("page"));
@@ -89,8 +88,6 @@ public class GradingController {
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
 
         QuestionManager.setSelectedScrapAnswers(scrapeService.getScrapedAnswers(parameters));
-
-        log.info("CHECK SCRAPE TO CONTROLLER : {}", QuestionManager.getSelectedScrapAnswers());
 
         if (!answerSelectionService.hasNext(answerSelectionService.getPage(), totalCount, limitCount)) {
             return "redirect:/result";
@@ -147,13 +144,9 @@ public class GradingController {
 
     @GetMapping("/scrape")
     public String scrape(Model model) {
-        //TODO:일단 가져와지는지 보고 모델 만들기
-        //TODO:NULL 체크하기
         scrapeService.splitScrapeType();
         List<Integer> getConfusingList = scrapeService.getConfusing();
         List<Integer> getUnknownList = scrapeService.getUnknown();
-        log.info("getConfusing : {}", getConfusingList);
-        log.info("getUnknown : {} ", getUnknownList);
 
         model.addAttribute("confusingList", getConfusingList);
         model.addAttribute("unknownList", getUnknownList);
