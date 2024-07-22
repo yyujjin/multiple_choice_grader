@@ -37,15 +37,11 @@ public class ScrapeServiceTest {
             //알쏭달쏭 버튼
             if(entry.getValue().getScrapeType().equals("Confusing") && entry.getValue().getIsScrap()){
                 confusingList.add(entry.getKey());
-                //이렇게 안하면 다른 메서드에서 인식못하니 this 해줘야함
-                //안해주면 여기 스코프 안에서만 리스트 만들어짐
                 this.confusingList = confusingList;
             }
             //모르겠다 버튼
             if(entry.getValue().getScrapeType().equals("Unknown") && entry.getValue().getIsScrap()){
                 unknownList.add(entry.getKey());
-                //이렇게 안하면 다른 메서드에서 인식못하니 this 해줘야함
-                //안해주면 여기 스코프 안에서만 리스트 만들어짐
                 this.unknownList = unknownList;
             }
         }
