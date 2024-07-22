@@ -23,7 +23,7 @@ public class CorrectAnswerServiceTest {
     }
 
     @Test
-    public void 틀린문제_가져오기() {
+    public void 맞힌문제_수_확인하기() {
         int totalCount = 5;
 
         Map<Integer, SelectedAnswer> testAnswers = new HashMap<>();
