@@ -16,6 +16,7 @@
                        class="btn-check btn-mark"
                        data-type="confusing"
                        th:attr="id=${'btn-check-scrap-'+number},name=${number+'_mark'}"
+                       value="confusing"
                        type="radio">
 
                 <label class="btn btn-outline-secondary" th:attr="for=${'btn-check-scrap-'+number}">
@@ -27,6 +28,7 @@
                        class="btn-check btn-mark"
                        data-type="unknown"
                        th:attr="id=${'btn-check-wrong-'+number}, name=${number+'_mark'}"
+                       value="unknown"
                        type="radio">
 
                 <label class="btn btn-outline-secondary" th:attr="for=${'btn-check-wrong-'+number}">
@@ -55,9 +57,8 @@
             </label>
         </div>
     </div>
-<!--    스크랩 이름 변경 -->
-
-    <input id="scrape" name="scrape" type="hidden">
+    <!--사용 안해도 될 것 같아서 주석 처리했습니다. 확인 부탁드려요!    -->
+<!--    <input id="scrape" name="scrape" type="hidden">-->
     <input name="page" th:attr="value=${page}" type="hidden">
     <input id="pageType" name="pageType" type="hidden">
     <div>
