@@ -145,7 +145,10 @@ public class GradingController {
     public String scrape(Model model) {
         scrapeService.splitScrapeType();
         List<Integer> getConfusingList = scrapeService.getConfusing();
+        Collections.sort(getConfusingList); //오름차순 정렬
+
         List<Integer> getUnknownList = scrapeService.getUnknown();
+        Collections.sort(getUnknownList);
 
         model.addAttribute("confusingList", getConfusingList);
         model.addAttribute("unknownList", getUnknownList);
