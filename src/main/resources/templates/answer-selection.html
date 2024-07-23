@@ -14,7 +14,6 @@
             <div>
                 <input autocomplete="off"
                        class="btn-check btn-mark"
-                       data-type="confusing"
                        th:attr="id=${'btn-check-scrap-'+number},name=${number+'_mark'}"
                        value="confusing"
                        type="radio">
@@ -26,7 +25,6 @@
 
                 <input autocomplete="off"
                        class="btn-check btn-mark"
-                       data-type="unknown"
                        th:attr="id=${'btn-check-wrong-'+number}, name=${number+'_mark'}"
                        value="unknown"
                        type="radio">
@@ -58,7 +56,7 @@
         </div>
     </div>
     <!--사용 안해도 될 것 같아서 주석 처리했습니다. 확인 부탁드려요!    -->
-<!--    <input id="scrape" name="scrape" type="hidden">-->
+    <!--<input id="scrape" name="scrape" type="hidden">-->
     <input name="page" th:attr="value=${page}" type="hidden">
     <input id="pageType" name="pageType" type="hidden">
     <div>
