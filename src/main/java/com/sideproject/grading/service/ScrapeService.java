@@ -34,11 +34,6 @@ public class ScrapeService {
             if (paramName.endsWith("_mark")) {
                 String questionNumberStr = paramName.split("_")[0];
                 questionNumber = Integer.parseInt(questionNumberStr);
-            }
-
-            if (paramName.equals("scrape")) {
-
-
                 //알쏭달쏭이면 처리하는 로직
                 if (entry.getValue().equals("confusing")) {
                     selectedScrapeAnswers.put(questionNumber, new Question(ScrapeType.confusing));
