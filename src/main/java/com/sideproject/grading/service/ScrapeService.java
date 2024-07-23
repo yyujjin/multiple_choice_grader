@@ -2,6 +2,12 @@ package com.sideproject.grading.service;
 
 import com.sideproject.grading.domain.Question;
 import com.sideproject.grading.domain.QuestionManager;
+
+import com.sideproject.grading.domain.ScrapeType;
+import com.sideproject.grading.domain.SelectedAnswer;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,34 +15,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
 @Service
 public class ScrapeService {
+    private final Logger log = LoggerFactory.getLogger(getClass());
     List<Integer> confusingList;
     List<Integer> unknownList;
 
     public Map<Integer, Question> getScrapedAnswers(Map<String, String> parameters) {
 
         Map<Integer, Question> selectedScrapeAnswers = QuestionManager.getSelectedScrapAnswers();
+        int questionNumber = 0;
 
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            log.info("ENTRY : {}", entry);
             String paramName = entry.getKey();
 
             if (paramName.endsWith("_mark")) {
                 String questionNumberStr = paramName.split("_")[0];
+                questionNumber = Integer.parseInt(questionNumberStr);
+            }
 
-                int questionNumber = Integer.parseInt(questionNumberStr);
+            if (paramName.equals("scrape")) {
+
 
                 //알쏭달쏭이면 처리하는 로직
                 if (entry.getValue().equals("confusing")) {
-                    selectedScrapeAnswers.put(questionNumber, new Question("Confusing", true));
+                    selectedScrapeAnswers.put(questionNumber, new Question(ScrapeType.confusing));
                 }
                 //모르겠다이면 처리하는 로직
                 if (entry.getValue().equals("unknown")) {
-                    selectedScrapeAnswers.put(questionNumber, new Question("Unknown", true));
+                    selectedScrapeAnswers.put(questionNumber, new Question(ScrapeType.unknown));
                 }
-
             }
         }
+
+        log.info("selectedScrapeAnswers : {}", selectedScrapeAnswers);
 
         return selectedScrapeAnswers;
     }
@@ -52,12 +66,12 @@ public class ScrapeService {
         Set<Map.Entry<Integer, Question>> entries = scrapedAnswers.entrySet();
         for (Map.Entry<Integer, Question> entry : entries) {
             //알쏭달쏭 버튼
-            if (entry.getValue().getScrapeType().equals("Confusing") && entry.getValue().getIsScrap()) {
+            if (entry.getValue().getScrapeType() == ScrapeType.confusing) {
                 confusingList.add(entry.getKey());
                 this.confusingList = confusingList;
             }
             //모르겠다 버튼
-            if (entry.getValue().getScrapeType().equals("Unknown") && entry.getValue().getIsScrap()) {
+            if (entry.getValue().getScrapeType() == ScrapeType.unknown) {
                 unknownList.add(entry.getKey());
                 this.unknownList = unknownList;
             }
