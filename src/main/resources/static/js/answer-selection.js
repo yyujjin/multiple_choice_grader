@@ -43,6 +43,12 @@ $btnMarks.forEach(btn => {
         // 누른 버튼 활성화
         target.dataset.checked = true
         target.checked = true
+
+
+        //알쏭달쏭 dataset - confusing
+        //모르겠다  dataset - unknown
+        const $scrape = document.querySelector('#scrape')
+        $scrape.value = target.dataset.type
     })
 })
 
