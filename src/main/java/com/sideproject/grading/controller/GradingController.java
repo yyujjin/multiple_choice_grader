@@ -83,8 +83,6 @@ public class GradingController {
         answerSelectionService.setPage(parameters.get("page"));
         answerSelectionService.setPageType(parameters.get("pageType"));
 
-        //답 선택 메서드에  파라미터 넘겨서 서비스에서 걸러서 정리하고 선택한 답 데이터 저장소에 넣음.
-        //배열을 전역 변수로 만들고 -> 서비스로 이동 -> get배열 후 put으로 넣고 배열 리턴 -> 컨트롤러에서 set배열
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
 
         QuestionManager.setSelectedScrapAnswers(scrapeService.getScrapedAnswers(parameters));

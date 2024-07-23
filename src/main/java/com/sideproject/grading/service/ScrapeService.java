@@ -23,19 +23,15 @@ public class ScrapeService {
 
             if (paramName.endsWith("_mark")) {
                 String questionNumberStr = paramName.split("_")[0];
-                String questionScrapeType = paramName.split("_")[1];
 
                 int questionNumber = Integer.parseInt(questionNumberStr);
 
-                //현재는 중복 설정안되게 버튼 하나의 값만 넘어오지만
-                //추후에 버튼 중복 설정 가능하도록 설정 변경 시 bool값을 하기위해 t/f값 넣는 코드로 작성
-
                 //알쏭달쏭이면 처리하는 로직
-                if (questionScrapeType.equals("isConfusing")) {
+                if (entry.getValue().equals("confusing")) {
                     selectedScrapeAnswers.put(questionNumber, new Question("Confusing", true));
                 }
                 //모르겠다이면 처리하는 로직
-                if (questionScrapeType.equals("isUnknown")) {
+                if (entry.getValue().equals("unknown")) {
                     selectedScrapeAnswers.put(questionNumber, new Question("Unknown", true));
                 }
 
