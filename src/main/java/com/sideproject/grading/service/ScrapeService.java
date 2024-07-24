@@ -4,8 +4,6 @@ import com.sideproject.grading.domain.Question;
 import com.sideproject.grading.domain.QuestionManager;
 
 import com.sideproject.grading.domain.ScrapeType;
-import com.sideproject.grading.domain.SelectedAnswer;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,11 +34,11 @@ public class ScrapeService {
                 questionNumber = Integer.parseInt(questionNumberStr);
                 //알쏭달쏭이면 처리하는 로직
                 if (entry.getValue().equals("confusing")) {
-                    selectedScrapeAnswers.put(questionNumber, new Question(ScrapeType.confusing));
+                    selectedScrapeAnswers.put(questionNumber, new Question(ScrapeType.CONFUSING));
                 }
                 //모르겠다이면 처리하는 로직
                 if (entry.getValue().equals("unknown")) {
-                    selectedScrapeAnswers.put(questionNumber, new Question(ScrapeType.unknown));
+                    selectedScrapeAnswers.put(questionNumber, new Question(ScrapeType.UNKNOWN));
                 }
             }
         }
@@ -61,12 +59,12 @@ public class ScrapeService {
         Set<Map.Entry<Integer, Question>> entries = scrapedAnswers.entrySet();
         for (Map.Entry<Integer, Question> entry : entries) {
             //알쏭달쏭 버튼
-            if (entry.getValue().getScrapeType() == ScrapeType.confusing) {
+            if (entry.getValue().getScrapeType() == ScrapeType.CONFUSING) {
                 confusingList.add(entry.getKey());
                 this.confusingList = confusingList;
             }
             //모르겠다 버튼
-            if (entry.getValue().getScrapeType() == ScrapeType.unknown) {
+            if (entry.getValue().getScrapeType() == ScrapeType.UNKNOWN) {
                 unknownList.add(entry.getKey());
                 this.unknownList = unknownList;
             }

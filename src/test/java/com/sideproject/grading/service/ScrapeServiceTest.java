@@ -23,9 +23,9 @@ public class ScrapeServiceTest {
     @Test
     void 스크랩문제_가져오기() {
         Map<Integer, Question> selectedScrapeAnswers = QuestionManager.getSelectedScrapAnswers();
-        selectedScrapeAnswers.put(1, new Question(ScrapeType.confusing));
-        selectedScrapeAnswers.put(3, new Question(ScrapeType.unknown));
-        selectedScrapeAnswers.put(4, new Question(ScrapeType.unknown));
+        selectedScrapeAnswers.put(1, new Question(ScrapeType.CONFUSING));
+        selectedScrapeAnswers.put(3, new Question(ScrapeType.UNKNOWN));
+        selectedScrapeAnswers.put(4, new Question(ScrapeType.UNKNOWN));
 
         this.scrapedAnswers = QuestionManager.getSelectedScrapAnswers();
 
@@ -35,12 +35,12 @@ public class ScrapeServiceTest {
         Set<Map.Entry<Integer, Question>> entries = scrapedAnswers.entrySet();
         for (Map.Entry<Integer, Question> entry : entries) {
             //알쏭달쏭 버튼
-            if (entry.getValue().getScrapeType()==ScrapeType.confusing) {
+            if (entry.getValue().getScrapeType()==ScrapeType.CONFUSING) {
                 confusingList.add(entry.getKey());
                 this.confusingList = confusingList;
             }
             //모르겠다 버튼
-            if (entry.getValue().getScrapeType()==ScrapeType.unknown) {
+            if (entry.getValue().getScrapeType()==ScrapeType.UNKNOWN) {
                 unknownList.add(entry.getKey());
                 this.unknownList = unknownList;
             }
