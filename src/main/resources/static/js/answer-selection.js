@@ -43,6 +43,7 @@ $btnMarks.forEach(btn => {
         // 누른 버튼 활성화
         target.dataset.checked = true
         target.checked = true
+
     })
 })
 

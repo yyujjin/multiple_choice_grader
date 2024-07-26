@@ -1,15 +1,15 @@
 package com.sideproject.grading.domain;
 
-public class Question {
-    private int number;
-    private boolean isScrap;
-    private boolean isWrong;
 
-    public Question(int number) {
-        this.number = number;
+public class Question {
+
+    private ScrapeType scrapeType;
+
+    public Question (ScrapeType scrapeType) {
+        this.scrapeType = scrapeType;
     }
 
-    public int getNumber() {
-        return number;
+    public ScrapeType getScrapeType() {
+        return scrapeType;
     }
 }

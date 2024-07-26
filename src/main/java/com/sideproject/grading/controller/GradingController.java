@@ -1,5 +1,11 @@
 package com.sideproject.grading.controller;
 
+
+
+import com.sideproject.grading.domain.QuestionManager;
+import com.sideproject.grading.domain.SelectedAnswerManager;
+import com.sideproject.grading.service.AnswerSelectionService;
+import com.sideproject.grading.service.ScrapeService;
 import com.sideproject.grading.domain.SelectedAnswer;
 import com.sideproject.grading.domain.SelectedAnswerManager;
 import com.sideproject.grading.service.AnswerSelectionService;
@@ -22,21 +28,27 @@ public class GradingController {
     private static final Logger log = LoggerFactory.getLogger(GradingController.class);
     private final AnswerSelectionService answerSelectionService;
     private final WrongAnswerService wrongAnswerService;
+    private final ScrapeService scrapeService;
     private final CorrectAnswerService correctAnswerService;
+
     @Value("${answer.totalCount}")
     int totalCount;
 
     @Value("${page.limitCount}")
     int limitCount;
 
-    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService,CorrectAnswerService correctAnswerService) {
+    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService,CorrectAnswerService correctAnswerService,ScrapeService scrapeService) {
         this.answerSelectionService = answerSelectionService;
         this.wrongAnswerService = wrongAnswerService;
         this.correctAnswerService = correctAnswerService;
+        this.scrapeService = scrapeService;
     }
 
     @GetMapping("/")
     public String start() {
+        //스크랩 리스트 초기화
+        scrapeService.resetScrape();
+
         return "start";
     }
 
@@ -53,6 +65,7 @@ public class GradingController {
 
         model.addAttribute("totalCount",totalCount);
         model.addAttribute("correctAnswerCount",correctAnswerCount);
+        model.addAttribute("scrapeAnswerCount",QuestionManager.getSelectedScrapAnswers().size());
 
         return "result";
     }
@@ -76,13 +89,17 @@ public class GradingController {
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
+
             parameters.put(paramName, request.getParameter(paramName));
+
         }
 
         answerSelectionService.setPage(parameters.get("page"));
         answerSelectionService.setPageType(parameters.get("pageType"));
         //답
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
+        QuestionManager.setSelectedScrapAnswers(scrapeService.getScrapedAnswers(parameters));
+
         //다음 페이지가 없으면 결과창으로 이동 
         if (!answerSelectionService.hasNext(answerSelectionService.getPage(), totalCount, limitCount)) {
             return "redirect:/result";
@@ -127,7 +144,7 @@ public class GradingController {
         answerSelectionService.setPageType(parameters.get("pageType"));
 
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
-
+        
         int total = wrongAnswerService.getWrongAnswers().size();
 
        
@@ -139,7 +156,17 @@ public class GradingController {
     }
 
     @GetMapping("/scrape")
-    public  String scrape() {
+    public String scrape(Model model) {
+        scrapeService.splitScrapeType();
+        List<Integer> getConfusingList = scrapeService.getConfusing();
+        Collections.sort(getConfusingList); //오름차순 정렬
+
+        List<Integer> getUnknownList = scrapeService.getUnknown();
+        Collections.sort(getUnknownList);
+
+        model.addAttribute("confusingList", getConfusingList);
+        model.addAttribute("unknownList", getUnknownList);
+
         return "/scrape";
     }
 }
