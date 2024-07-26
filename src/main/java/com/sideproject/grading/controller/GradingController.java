@@ -1,10 +1,15 @@
 package com.sideproject.grading.controller;
 
-import com.sideproject.grading.domain.Question;
+
+
 import com.sideproject.grading.domain.QuestionManager;
 import com.sideproject.grading.domain.SelectedAnswerManager;
 import com.sideproject.grading.service.AnswerSelectionService;
 import com.sideproject.grading.service.ScrapeService;
+import com.sideproject.grading.domain.SelectedAnswer;
+import com.sideproject.grading.domain.SelectedAnswerManager;
+import com.sideproject.grading.service.AnswerSelectionService;
+import com.sideproject.grading.service.CorrectAnswerService;
 import com.sideproject.grading.service.WrongAnswerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -24,6 +29,7 @@ public class GradingController {
     private final AnswerSelectionService answerSelectionService;
     private final WrongAnswerService wrongAnswerService;
     private final ScrapeService scrapeService;
+    private final CorrectAnswerService correctAnswerService;
 
     @Value("${answer.totalCount}")
     int totalCount;
@@ -31,9 +37,10 @@ public class GradingController {
     @Value("${page.limitCount}")
     int limitCount;
 
-    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService, ScrapeService scrapeService) {
+    public GradingController(AnswerSelectionService answerSelectionService, WrongAnswerService wrongAnswerService,CorrectAnswerService correctAnswerService,ScrapeService scrapeService) {
         this.answerSelectionService = answerSelectionService;
         this.wrongAnswerService = wrongAnswerService;
+        this.correctAnswerService = correctAnswerService;
         this.scrapeService = scrapeService;
     }
 
@@ -53,7 +60,13 @@ public class GradingController {
 
     @GetMapping("/result")
     public String result(Model model) {
+
+        int correctAnswerCount = correctAnswerService.getCorrectAnswerCount(totalCount);
+
+        model.addAttribute("totalCount",totalCount);
+        model.addAttribute("correctAnswerCount",correctAnswerCount);
         model.addAttribute("scrapeAnswerCount",QuestionManager.getSelectedScrapAnswers().size());
+
         return "result";
     }
 
@@ -83,11 +96,11 @@ public class GradingController {
 
         answerSelectionService.setPage(parameters.get("page"));
         answerSelectionService.setPageType(parameters.get("pageType"));
-
+        //답
         SelectedAnswerManager.setSelectedAnswers(answerSelectionService.getSelectedAnswers(parameters));
-
         QuestionManager.setSelectedScrapAnswers(scrapeService.getScrapedAnswers(parameters));
 
+        //다음 페이지가 없으면 결과창으로 이동 
         if (!answerSelectionService.hasNext(answerSelectionService.getPage(), totalCount, limitCount)) {
             return "redirect:/result";
         }
@@ -134,6 +147,7 @@ public class GradingController {
         
         int total = wrongAnswerService.getWrongAnswers().size();
 
+       
         if (!answerSelectionService.hasNext(answerSelectionService.getPage(), total, limitCount)) {
             return "redirect:/result";
         }
